@@ -98,7 +98,10 @@ vim.opt.cursorline = true
 vim.opt.scrolloff = 15
 
 -- Intendation for switch-case
-vim.opt.cinoptions = '=0'
+vim.opt.cindent = true
+vim.opt.cinoptions = '0'
+vim.opt.indentexpr = ''
+vim.opt.cinkeys = '-1s{,0},0),0],:,0#,!^F,o,O,e'
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
@@ -614,6 +617,7 @@ require('lazy').setup({
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
+        c = { 'clang-format' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
@@ -810,7 +814,7 @@ require('lazy').setup({
         --  the list of additional_vim_regex_highlighting and disabled languages for indent.
         additional_vim_regex_highlighting = { 'ruby' },
       },
-      indent = { enable = true, disable = { 'ruby' } },
+      -- indent = { enable = true, disable = { 'ruby' } },
     },
     config = function(_, opts)
       -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
