@@ -143,6 +143,9 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
+-- Switch header-source file
+vim.keymap.set('n', '<M-o>', ':Ouroboros<CR>')
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -229,6 +232,26 @@ require('lazy').setup({
         changedelete = { text = '~' },
       },
     },
+  },
+
+  {
+    'neovim/nvim-lspconfig',
+    opts = {},
+  },
+
+  {
+    'hrsh7th/nvim-cmp',
+    opts = {},
+  },
+
+  {
+    'hrsh7th/cmp-nvim-lsp',
+    opts = {},
+  },
+
+  {
+    'jakemason/ouroboros',
+    opts = {},
   },
 
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
