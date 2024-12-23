@@ -254,9 +254,13 @@ require('lazy').setup({
     opts = { italic_comments = true },
   },
 
+  -- Switch between header and source file
   {
-    'Mofiqul/vscode.nvim',
+    'jakemason/ouroboros',
     opts = {},
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+    },
   },
 
   {
