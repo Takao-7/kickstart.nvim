@@ -170,7 +170,7 @@ vim.opt.scrolloff = 15
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- Diagnostic keymaps
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+vim.keymap.set('n', '<leader>Q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -194,6 +194,9 @@ vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left wind
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+
+-- Close the current window
+vim.keymap.set('n', '<leader>q', '<cmd>:q<CR>', { desc = '([Q]uit) Close the current window' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -245,7 +248,7 @@ require('lazy').setup({
 
   {
     'BoHomola/vsassist.nvim',
-    opts = { italic_comments = true },
+    opts = { italic_comments = false },
   },
 
   -- Switch between header and source file
@@ -655,7 +658,39 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
-        clangd = {},
+        clangd = {
+          root_dir = function(fname)
+                local root_dir = require("lspconfig.util").root_pattern(
+                  "CMakeLists.txt",
+                  "Makefile",
+                  "configure.ac",
+                  "configure.in",
+                  "config.h.in",
+                  "meson.build",
+                  "meson_options.txt",
+                  "build.ninja"
+                )(fname) or
+                require("lspconfig.util").root_pattern("compile_commands.json", "compile_flags.txt")(fname) or
+                vim.fs.dirname(vim.fs.find('.git', { path = fname, upwards = true })[1])
+                return root_dir
+              end,
+              cmd = {
+                "clangd",
+                "--all-scopes-completion",
+                "--background-index",
+                "--completion-parse=always",
+                "--completion-style=bundled",
+                "--enable-config",
+                "--fallback-style=llvm",
+                "--function-arg-placeholders",
+                "--header-insertion=iwyu",
+                "--pch-storage=memory",
+                "-j=4",
+                "--log=verbose",
+                "--query-driver=C:\\ProgramData\\chocolatey\\bin\\c++.exe,C:\\ProgramData\\chocolatey\\bin\\g++.exe",
+              },
+              mason = true,
+        },
         -- gopls = {},
         -- pyright = {},
         -- rust_analyzer = {},
