@@ -110,7 +110,7 @@ vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
-vim.opt.mouse = 'a'
+vim.opt.mouse = 'n'
 
 -- Don't show the mode, since it's already in the status line
 vim.opt.showmode = false
@@ -180,20 +180,16 @@ vim.keymap.set('n', '<leader>Q', vim.diagnostic.setloclist, { desc = 'Open diagn
 -- or just use <C-\><C-n> to exit terminal mode
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
--- TIP: Disable arrow keys in normal mode
--- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
--- vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
--- vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
--- vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
-
--- Keybinds to make split navigation easier.
---  Use CTRL+<hjkl> to switch between windows
---
 --  See `:help wincmd` for a list of all window commands
 vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+
+vim.keymap.set("n", "<C-Up>", "<cmd>resize +10<cr>", { desc = "Increase Window Height" })
+vim.keymap.set("n", "<C-Down>", "<cmd>resize -10<cr>", { desc = "Decrease Window Height" })
+vim.keymap.set("n", "<C-Right>", "<cmd>vertical resize +10<cr>", { desc = "Increase Window Width" })
+vim.keymap.set("n", "<C-Left>", "<cmd>vertical resize -10<cr>", { desc = "Decrease Window Width" })
 
 -- Close the current window
 vim.keymap.set('n', '<leader>q', '<cmd>:q<CR>', { desc = '([Q]uit) Close the current window' })
@@ -659,7 +655,8 @@ require('lazy').setup({
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         clangd = {
-          root_dir = function(fname)
+          root_dir =
+            function(fname)
                 local root_dir = require("lspconfig.util").root_pattern(
                   "CMakeLists.txt",
                   "Makefile",
@@ -673,23 +670,24 @@ require('lazy').setup({
                 require("lspconfig.util").root_pattern("compile_commands.json", "compile_flags.txt")(fname) or
                 vim.fs.dirname(vim.fs.find('.git', { path = fname, upwards = true })[1])
                 return root_dir
-              end,
-              cmd = {
-                "clangd",
-                "--all-scopes-completion",
-                "--background-index",
-                "--completion-parse=always",
-                "--completion-style=bundled",
-                "--enable-config",
-                "--fallback-style=llvm",
-                "--function-arg-placeholders",
-                "--header-insertion=iwyu",
-                "--pch-storage=memory",
-                "-j=4",
-                "--log=verbose",
-                "--query-driver=C:\\ProgramData\\chocolatey\\bin\\c++.exe,C:\\ProgramData\\chocolatey\\bin\\g++.exe",
-              },
-              mason = true,
+            end,
+          cmd = {
+            "clangd",
+            "--all-scopes-completion",
+            "--background-index",
+            "--completion-parse=always",
+            "--completion-style=bundled",
+            "--enable-config",
+            "--fallback-style=llvm",
+            "--function-arg-placeholders",
+            "--header-insertion=iwyu",
+            "--pch-storage=memory",
+            "-j=4",
+            "--log=verbose",
+            "--query-driver=C:\\ProgramData\\chocolatey\\bin\\c++.exe,C:\\ProgramData\\chocolatey\\bin\\g++.exe",
+          },
+          -- diagnostics = { disable = true },
+          mason = true,
         },
         -- gopls = {},
         -- pyright = {},
@@ -713,7 +711,7 @@ require('lazy').setup({
                 callSnippet = 'Replace',
               },
               -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-              -- diagnostics = { disable = { 'missing-fields' } },
+              diagnostics = { disable = { 'missing-fields' } },
             },
           },
         },
