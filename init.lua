@@ -680,7 +680,7 @@ require('lazy').setup({
             "--enable-config",
             "--fallback-style=llvm",
             "--function-arg-placeholders",
-            "--header-insertion=iwyu",
+            --"--header-insertion=iwyu",
             "--pch-storage=memory",
             "-j=4",
             "--log=verbose",
