@@ -243,6 +243,30 @@ require('lazy').setup({
   --
 
   {
+    "folke/zen-mode.nvim",
+    config = function()
+        require('zen-mode').setup(
+        {
+          window =
+          {
+            backdrop = 1.0,
+            width = .5,
+            height = 1.0,
+          },
+          plugins =
+          {
+            options =
+            {
+              showcmd = true
+            }
+          },
+          vim.keymap.set('n', '<F12>', ':ZenMode<CR>')
+        }
+)
+    end,
+  },
+
+  {
     'BoHomola/vsassist.nvim',
     opts = { italic_comments = false },
   },
