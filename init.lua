@@ -165,6 +165,9 @@ vim.opt.scrolloff = 15
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
+-- Save the current file / buffer
+vim.keymap.set('n', '<C-s>', ':wa<CR>', { desc = 'Save file'})
+
 -- Clear highlights on search when pressing <Esc> in normal mode
 --  See `:help hlsearch`
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
