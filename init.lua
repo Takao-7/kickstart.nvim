@@ -711,7 +711,7 @@ require('lazy').setup({
             "--pch-storage=memory",
             "-j=4",
             "--log=verbose",
-            "--query-driver=C:\\ProgramData\\chocolatey\\bin\\c++.exe,C:\\ProgramData\\chocolatey\\bin\\g++.exe",
+            "--query-driver=C:/ProgramData/chocolatey/bin/gcc,C:/ProgramData/chocolatey/bin/g++",
           },
           -- diagnostics = { disable = true },
           mason = true,
