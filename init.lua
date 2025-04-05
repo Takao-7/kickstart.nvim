@@ -710,6 +710,7 @@ require('lazy').setup({
             "--pch-storage=memory",
             "-j=4",
             "--log=verbose",
+            "-header-insertion=never",
           },
           -- diagnostics = { disable = true },
           mason = true,
